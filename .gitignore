@@ -1,0 +1,7 @@
+**/node_modules
+**/.eslintrc.json
+**/.next
+
+**/__pycache__
+**/env
+**/venv
