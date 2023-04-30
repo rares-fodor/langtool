@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+    image: langtool-frontend
+    ports:
+      - "8000:3000"
+    volumes:
+      - ./frontend/:/usr/src/app/
+    expose:
+      - "3000"
+  backend:
+    build: 
+      context: ./backend
+    image: langtool-backend
+    ports:
+      - "8080:5000"
+    volumes:
+      - ./backend/:/usr/src/app/
+    expose:
+      - "5000"
+  curl-test:
+    image: curlimages/curl
