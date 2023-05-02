@@ -1,9 +1,34 @@
 # Changelog
 
 ##### Planned changes
+- Update the frontend to display the sentences received after a request
+
+##### 02-05-2023
+###### Added
+- Sentence DB
+    - Postgres database to store sentences
+    - Init scripts
+    - Communicates to the backend directly
+- Adminer
+    - Database administration interface
+- Backend
+    - Sqlalchemy model for the sentence table
+    - Working query for sentences
+    - Now returns sample sentences when requesting "test"
+- Infra
+    - Isolated containers with appropriate networks 
+    - Database healthcheck
+
+#### Current status
+The backend and database are now configured and able to respond with a couple of sample sentences when requesting "test" from the web interface.
+
+
+
+##### Planned changes
 - Integrate the sentence database with the backend server.
 - Implement the means to perform a request for a sample sentence and display the result (strictly for testing the communication).
 - Move the components behind an API Gateway
+
  
 ##### 30-04-2023
 ###### Added

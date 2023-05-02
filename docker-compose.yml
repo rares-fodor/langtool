@@ -1,5 +1,6 @@
 version: "3.8"
 
+
 services:
   frontend:
     build: 
@@ -9,17 +10,57 @@ services:
       - "8000:3000"
     volumes:
       - ./frontend/:/usr/src/app/
-    expose:
-      - "3000"
+
   backend:
     build: 
       context: ./backend
     image: langtool-backend
+    environment:
+      DB_USER: admin
+      DB_PASS: admin
+      DB_HOST: sentence-db
+      DB_SENTENCE_TABLE: sentences
     ports:
       - "8080:5000"
+    depends_on:
+      sentence-db:
+        condition: service_healthy
     volumes:
       - ./backend/:/usr/src/app/
-    expose:
-      - "5000"
-  curl-test:
-    image: curlimages/curl
+    networks:
+      - backend-db-network
+
+  sentence-db:
+    image: postgres:alpine3.17
+    environment:
+      POSTGRES_DB: sentences
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d sentences -U admin"]
+      interval: 5s
+      timeout: 5s 
+    volumes:
+      - ./sentence-db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - sentence-db-persistent-vol:/var/lib/postgresql/data
+    networks:
+      - backend-db-network
+      - backend-db-admin-network
+
+  adminer:
+    image: adminer
+    ports:
+      - 8086:8080
+    depends_on:
+      - sentence-db
+    networks:
+      - backend-db-admin-network
+
+
+volumes:
+  sentence-db-persistent-vol:
+
+networks:
+  backend-db-network:
+  backend-db-admin-network:
+
