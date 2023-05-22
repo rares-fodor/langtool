@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export default function AppShellDemo() {
+export default function MainPageShell() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const { classes, cx } = useStyles();
