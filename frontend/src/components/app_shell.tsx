@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import SearchPage from '@/components/search_page.tsx'
 import {
   AppShell,
   Header,
@@ -11,9 +9,10 @@ import {
   createStyles,
   rem,
 } from '@mantine/core';
+import { ReactNode } from 'react';
 
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
 	header_container: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -24,11 +23,14 @@ const useStyles = createStyles((theme) => ({
 	}
 }));
 
+interface ShellProps {
+  children: ReactNode
+}
 
-export default function MainPageShell() {
+
+export default function MainPageShell( props: ShellProps ) {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
 
   return (
     <AppShell
@@ -59,7 +61,7 @@ export default function MainPageShell() {
         </Header>
       }
     >
-      <SearchPage/>
+      {props.children}
     </AppShell>
   );
 }

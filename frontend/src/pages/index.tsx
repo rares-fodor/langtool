@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
-import AppShellDemo from '@/components/app_shell.tsx'
+import MainPageShell from '../components/app_shell'
+import SearchPage from '../components/search_page'
 
 export default function Home() {
   return (
@@ -12,7 +12,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <AppShellDemo></AppShellDemo>
+        <MainPageShell>
+          <SearchPage> <></> </SearchPage>
+        </MainPageShell>
       </main>
     </>
   )

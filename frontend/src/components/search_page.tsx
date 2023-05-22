@@ -1,9 +1,12 @@
-import { Text, Button, Container, Flex, TextInput, createStyles, Box, ActionIcon, Paper, Space, ScrollArea } from "@mantine/core"
-import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from "react";
+import { Text, Container, TextInput, ActionIcon, Space } from "@mantine/core"
+import { ChangeEvent, KeyboardEvent, MouseEvent, ReactNode, useState } from "react";
 import { IconSearch } from '@tabler/icons-react';
-import { send_query } from '../api/requests'
-import { SentenceResult } from './sentence_result'
+import SentenceResult from './sentence_result'
+import { useRouter } from "next/router";
 
+interface SearchProps {
+	children: ReactNode,
+}
 
 interface Sentence {
 	id: number,
@@ -11,38 +14,21 @@ interface Sentence {
 	source: string;
 }
 
-function mapSentences(sentences: Sentence[], needle: string) {
-	return sentences.map((s) => (
-		<SentenceResult
-			key={s.id}
-			value={s.sentence}
-			needle={needle}
-			source={s.source}
-		/>
-	))
-}
 
-export default function SearchPage() {
+export default function SearchPage( props: SearchProps ) {
 	const searchBoxPrompt = "Find sentences...";
 	const [inputValue, setInputValue] = useState<string>('');
-	const [sentences, setSentences] = useState<React.ReactNode[]>([]);
-	const [resultsFound, setResultsFound] = useState<boolean>(false);
-	
-	let response: Sentence[];
+	const router = useRouter()
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     setInputValue(event.target.value);
   }
 
-	async function handleSubmit() {
-		response = await send_query(inputValue);
-
-		if (response.length > 0) {
-			setResultsFound(true);
-			setSentences(mapSentences(response, inputValue));
-		} else {
-			setResultsFound(false);
-		}
+	function handleSubmit() {
+		router.push({
+			pathname: "/search",
+			query: { q: inputValue }
+		})
 	}
 
 	function handleMouseClick(event: MouseEvent<HTMLButtonElement>) {
@@ -76,9 +62,9 @@ export default function SearchPage() {
 				}
 			/>
 			<Space h="sm"/>
-			<ScrollArea.Autosize mah={600} scrollbarSize={2}>
-				{ resultsFound ? sentences : <Text>No results found...</Text> }
-			</ScrollArea.Autosize>
+			{props.children}
 		</Container>
 	)
 }
+
+

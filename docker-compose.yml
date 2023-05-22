@@ -10,6 +10,8 @@ services:
       - "8000:3000"
     volumes:
       - ./frontend/:/usr/src/app/
+    networks:
+      - backend-frontend
 
   backend:
     build: 
@@ -29,6 +31,7 @@ services:
       - ./backend/:/usr/src/app/
     networks:
       - backend-db-network
+      - backend-frontend
 
   sentence-db:
     image: postgres:alpine3.17
@@ -63,4 +66,5 @@ volumes:
 networks:
   backend-db-network:
   backend-db-admin-network:
+  backend-frontend:
 

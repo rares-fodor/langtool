@@ -6,8 +6,7 @@ interface SentenceProps {
 	needle: string,
 }
 
-
-export function SentenceResult (props: SentenceProps) {
+export default function SentenceResult (props: SentenceProps) {
 	return (
 		<>
 			<Paper shadow="sm" p="lg">
